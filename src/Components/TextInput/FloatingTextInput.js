@@ -11,6 +11,22 @@ const FloatingTextInput1=({label,...props})=>{
     const handleBlur=()=>{
         setIsFocused(false)
     }
+    const labelStyle={
+        position:'absolute',
+        left:9,
+        top:animatedIsFocused.interpolate({
+            inputRange:[0,1],
+            outputRange:[(40-16)/2,0]
+        }),
+        fontSize:animatedIsFocused.interpolate({
+            inputRange:[0,1],
+            outputRange:[16,12]
+        }),
+        color:animatedIsFocused.interpolate({
+            inputRange:[0,1],
+            outputRange:['transparent',Colors.primary],
+        }),
+    }
     Animated.timing(
         animatedIsFocused,{
             toValue:isFocused || props.value?1:0,
@@ -20,7 +36,7 @@ const FloatingTextInput1=({label,...props})=>{
     ).start();
     return(
         <View style={styles.floatingTextContainer}>
-            <Animated.Text style={styles.labelStyle}>{label}</Animated.Text>            
+            <Animated.Text style={labelStyle}>{label}</Animated.Text>            
             <TextInput
             {...props}
             style={styles.floatingTextInput}
@@ -46,21 +62,6 @@ const styles=StyleSheet.create({
         height:40,
         fontSize:16
     },
-    labelStyle:{
-        position:'absolute',
-        left:9,
-        top:animatedIsFocused.interpolate({
-            inputRange:[0,1],
-            outputRange:[(40-16)/2,0]
-        }),
-        fontSize:animatedIsFocused.interpolate({
-            inputRange:[0,1],
-            outputRange:[16,12]
-        }),
-        color:animatedIsFocused.interpolate({
-            inputRange:[0,1],
-            outputRange:['transparent',Colors.primary],
-        }),
-    }
+    
 })
 export default FloatingTextInput1

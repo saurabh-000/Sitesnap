@@ -1,5 +1,7 @@
 import React from "react"
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
+import Colors from "../../Theme/Colors"
+import Fonts from "../../Theme/Fonts"
 const WideButton=({label,onPress})=>{
     return(
         <TouchableOpacity onPress={onPress} style={styles.buttonContainer}>

@@ -2,7 +2,16 @@ import React from "react"
 import { Image, SafeAreaView, StatusBar, Text, View } from "react-native"
 import Colors from "../../Theme/Colors"
 import Fonts from "../../Theme/Fonts"
+import { useFocusEffect, useNavigation } from "@react-navigation/native"
 const SplashScreen=()=>{
+    const navigation=useNavigation()
+    useFocusEffect(
+        React.useCallback(()=>{
+            setTimeout(()=>{
+                navigation.navigate('SigninScreen')
+            },2000)
+        },[])
+    )
     return(
         <>
             <StatusBar
