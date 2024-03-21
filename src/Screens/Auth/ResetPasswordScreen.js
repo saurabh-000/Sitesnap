@@ -1,36 +1,20 @@
 import React, { useState } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Colors from "../../Theme/Colors"
 import Fonts from "../../Theme/Fonts"
 import WideButton from "../../Components/Button/WideButton"
 import FloatingTextInput from "../../Components/TextInput/FloatingTextInput"
-import { useNavigation } from "@react-navigation/native"
-const SignupScreen=()=>{
-    const navigation=useNavigation()
-    const [username,setUsername]=useState('')
+const ResetPasswordScreen=()=>{
     const [password,setPassword]=useState('')
     const [confirmPassword,setConfirmPassword]=useState('')
-    const onLogin=()=>{
-        console.log("login function")
-    }
-    const onClickLogin=()=>{
-        console.log("go to gc")
-        navigation.navigate("SigninScreen")
+    const onResetPassword=()=>{
+        console.log("on reset password")
     }
     return(
-        <>
-            <View style={styles.container}>
-                <Text style={styles.heading}>New to Sitesnap?</Text>
-                <View style={styles.inputContainer}>
-                    <FloatingTextInput 
-                        label={'Username'} 
-                        value={username} 
-                        onChangeText={setUsername}  
-                    />
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{1?'':'Please enter valid email ID'}</Text>
-                    </View>
-                </View>
+        <View style={styles.container}>
+
+                <Text style={styles.heading}>Reset Password</Text>
+                
                 <View style={styles.inputContainer}>
                     <FloatingTextInput 
                         label={'Password'} 
@@ -52,13 +36,10 @@ const SignupScreen=()=>{
                         <Text style={styles.errorText}>{1?'':'Please enter valid email ID'}</Text>
                     </View>
                 </View>
-                 
-                <WideButton label={'Sign up'} onPress={onLogin}/>    
-            
-                <Text style={styles.loginTextLinkOuter}>Already have an account? <Text style={styles.loginTextLinkInner}  onPress ={onClickLogin}>Log in</Text></Text>
+
+                <WideButton label={'Reset Password'} onPress={onResetPassword}/> 
 
             </View>
-        </>   
     )
 }
 const styles=StyleSheet.create({
@@ -90,13 +71,19 @@ const styles=StyleSheet.create({
         color:Colors.danger,
         fontFamily:Fonts.LatoRegular
     },
-    loginTextLinkOuter:{
+    forgotPasswordTextLink:{
+        fontFamily:Fonts.LatoBold,
+        lineHeight:20,
+        marginVertical:10,
+        color:Colors.primary
+    },
+    signupTextLinkOuter:{
         fontFamily:Fonts.LatoBold,
         lineHeight:20,
         marginVertical:10
     },
-    loginTextLinkInner:{
+    signupTextLinkInner:{
         color:Colors.primary
     }
 })
-export default SignupScreen
+export default ResetPasswordScreen

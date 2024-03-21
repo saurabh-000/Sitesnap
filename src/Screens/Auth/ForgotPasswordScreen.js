@@ -10,6 +10,7 @@ const ForgotPasswordScreen=()=>{
     const [username,setUsername]=useState('')
     const onContinue=()=>{
         console.log("go to Otp screen")
+        navigation.navigate('ResetPasswordScreen')
     }
 
     return(
