@@ -55,7 +55,7 @@ const SignupScreen=()=>{
                  
                 <WideButton label={'Sign up'} onPress={onLogin}/>    
             
-                <Text style={styles.signupTextLinkOuter}>Already have an account? <Text style={styles.signupTextLinkInner}  onPress ={onClickLogin}>Log in</Text></Text>
+                <Text style={styles.loginTextLinkOuter}>Already have an account? <Text style={styles.loginTextLinkInner}  onPress ={onClickLogin}>Log in</Text></Text>
 
             </View>
         </>   
@@ -90,18 +90,12 @@ const styles=StyleSheet.create({
         color:Colors.danger,
         fontFamily:Fonts.LatoRegular
     },
-    forgotPasswordTextLink:{
-        fontFamily:Fonts.LatoBold,
-        lineHeight:20,
-        marginVertical:10,
-        color:Colors.primary
-    },
-    signupTextLinkOuter:{
+    loginTextLinkOuter:{
         fontFamily:Fonts.LatoBold,
         lineHeight:20,
         marginVertical:10
     },
-    signupTextLinkInner:{
+    loginTextLinkInner:{
         color:Colors.primary
     }
 })

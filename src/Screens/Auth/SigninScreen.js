@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { StatusBar, StyleSheet, Text, View } from "react-native"
+import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Colors from "../../Theme/Colors"
 import Fonts from "../../Theme/Fonts"
 import WideButton from "../../Components/Button/WideButton"
@@ -15,6 +15,10 @@ const SigninScreen=()=>{
     const onClickSignup=()=>{
         console.log("go to gc")
         navigation.navigate("SignupScreen")
+    }
+
+    const onClickForgotPassword=()=>{
+        navigation.navigate("ForgotPasswordScreen")
     }
     return(
         <>
@@ -41,7 +45,9 @@ const SigninScreen=()=>{
                         value={password} 
                         onChangeText={setPassword}  
                     />
-                    <Text style={styles.forgotPasswordTextLink}>Forgot Password?</Text>
+                    <TouchableOpacity onPress={onClickForgotPassword}>
+                        <Text  style={styles.forgotPasswordTextLink}>Forgot Password?</Text>
+                    </TouchableOpacity>
                 </View>
                  
                 <WideButton label={'Log in'} onPress={onLogin}/>    
