@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Animated, StyleSheet, Text, TextInput, View } from "react-native"
-import Colors from "../Theme/Colors"
-import Fonts from "../Theme/Fonts"
+import Colors from "../../Theme/Colors"
+import Fonts from "../../Theme/Fonts"
 const FloatingTextInput1=({label,...props})=>{
     const [isFocused,setIsFocused]=useState(false)
     const [animatedIsFocused]=useState(new Animated.Value(props.value?1:0))
