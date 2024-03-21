@@ -1,30 +1,26 @@
 import React, { useState } from "react"
-import { StatusBar, StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 import Colors from "../../Theme/Colors"
 import Fonts from "../../Theme/Fonts"
 import WideButton from "../../Components/Button/WideButton"
 import FloatingTextInput from "../../Components/TextInput/FloatingTextInput"
 import { useNavigation } from "@react-navigation/native"
-const SigninScreen=()=>{
+const SignupScreen=()=>{
     const navigation=useNavigation()
     const [username,setUsername]=useState('')
     const [password,setPassword]=useState('')
+    const [confirmPassword,setConfirmPassword]=useState('')
     const onLogin=()=>{
         console.log("login function")
     }
-    const onClickSignup=()=>{
+    const onClickLogin=()=>{
         console.log("go to gc")
-        navigation.navigate("SignupScreen")
+        navigation.navigate("SigninScreen")
     }
     return(
         <>
-            <StatusBar
-                animated={true}
-                backgroundColor={Colors.white}
-                barStyle={'dark-content'}
-            />
             <View style={styles.container}>
-                <Text style={styles.heading}>Login to Sitesnap</Text>
+                <Text style={styles.heading}>New to Sitesnap?</Text>
                 <View style={styles.inputContainer}>
                     <FloatingTextInput 
                         label={'Username'} 
@@ -41,17 +37,29 @@ const SigninScreen=()=>{
                         value={password} 
                         onChangeText={setPassword}  
                     />
-                    <Text style={styles.forgotPasswordTextLink}>Forgot Password?</Text>
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{1?'':'Please enter valid email ID'}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.inputContainer}>
+                    <FloatingTextInput 
+                        label={'Confirm Password'} 
+                        value={confirmPassword} 
+                        onChangeText={setPassword}  
+                    />
+                    <View style={styles.errorContainer}>
+                        <Text style={styles.errorText}>{1?'':'Please enter valid email ID'}</Text>
+                    </View>
                 </View>
                  
-                <WideButton label={'Log in'} onPress={onLogin}/>    
+                <WideButton label={'Sign up'} onPress={onLogin}/>    
             
-                <Text style={styles.signupTextLinkOuter}>Don't have account? <Text style={styles.signupTextLinkInner} onPress ={onClickSignup}>Sign up</Text></Text>
+                <Text style={styles.signupTextLinkOuter}>Already have an account? <Text style={styles.signupTextLinkInner}  onPress ={onClickLogin}>Log in</Text></Text>
 
             </View>
-        </>
+        </>   
     )
-
 }
 const styles=StyleSheet.create({
     container:{
@@ -97,4 +105,4 @@ const styles=StyleSheet.create({
         color:Colors.primary
     }
 })
-export default SigninScreen
+export default SignupScreen
