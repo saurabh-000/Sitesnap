@@ -11,6 +11,7 @@ const SigninScreen=()=>{
     const [password,setPassword]=useState('')
     const onLogin=()=>{
         console.log("login function")
+        navigation.navigate("BottomNavigation")
     }
     const onClickSignup=()=>{
         console.log("go to gc")

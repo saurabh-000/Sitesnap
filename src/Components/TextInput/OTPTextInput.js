@@ -25,7 +25,8 @@ const OTPTextInput=({length,value,onChangeText})=>{
         <View style={{flexDirection:'row'}}>
             {
                 otp.map((item,index)=>
-                    <TextInput 
+                    <TextInput
+                        key={index} 
                         cursorColor={Colors.primary}
                         style={styles.textInput}
                         maxLength={1}

@@ -5,6 +5,9 @@ import SignupScreen from "../Screens/Auth/SignupScreen";
 import ForgotPasswordScreen from "../Screens/Auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "../Screens/Auth/ResetPasswordScreen";
 import OTPScreen from "../Screens/Auth/OTPScreen";
+import HomeScreen from "../Screens/Home/HomeScreen";
+import ProfileScreen from "../Screens/Profile/ProfileScreen";
+import BottomNavigation from "./BottomNavigation";
 
 const Stack = createNativeStackNavigator();
 const InitialScreens=()=>{
@@ -40,7 +43,36 @@ const InitialScreens=()=>{
           options={{headerShown: false, tabBarVisible: false}}
           component={OTPScreen}
         />
+        <Stack.Screen
+          name="BottomNavigation"
+          options={{headerShown: false, tabBarVisible: false}}
+          component={BottomNavigation}
+        />
       </Stack.Navigator>
     )
 }
-export {InitialScreens}
+
+const Home=()=>{
+  return(
+    <Stack.Navigator>
+        <Stack.Screen
+          name="HomeScreen"
+          options={{headerShown: false, tabBarVisible: false}}
+          component={HomeScreen}
+        />
+    </Stack.Navigator>
+  )
+}
+
+const Profile=()=>{
+  return(
+    <Stack.Navigator>
+        <Stack.Screen
+          name="ProfileScreen"
+          options={{headerShown: false, tabBarVisible: false}}
+          component={ProfileScreen}
+        />
+    </Stack.Navigator>
+  )
+}
+export {InitialScreens, Home, Profile}
