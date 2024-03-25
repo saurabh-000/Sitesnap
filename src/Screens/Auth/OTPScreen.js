@@ -1,36 +1,42 @@
-import { useNavigation } from "@react-navigation/native"
 import React, { useState } from "react"
+import { useNavigation } from "@react-navigation/native"
 import { StyleSheet, Text, View } from "react-native"
 import FloatingTextInput1 from "../../Components/TextInput/FloatingTextInput"
 import WideButton from "../../Components/Button/WideButton"
 import Fonts from "../../Theme/Fonts"
 import Colors from "../../Theme/Colors"
-const ForgotPasswordScreen=()=>{
+import OTPTextInput from "../../Components/TextInput/OTPTextInput"
+
+const OTPScreen=()=>{
+    const [otp, setOTP]=useState('')
     const navigation=useNavigation()
-    const [username,setUsername]=useState('')
-    const onContinue=()=>{
-        console.log("go to Otp screen")
-        navigation.navigate('OTPScreen')
+    const onVerifyOTP=()=>{
+        console.log("verify otp",otp)
+        navigation.navigate("ResetPasswordScreen")
+    }
+
+    const _onChangeText=(text)=>{
+        setOTP(text)
     }
 
     return(
         <>
             <View style={styles.container}>
-                <Text style={styles.heading}>Forgot Password</Text>
-                <Text style={styles.description}>Please enter your registered details and we will send you an OTP to reset your password</Text>
+                <Text style={styles.heading}>OTP</Text>
+                <Text style={styles.description}>Please enter OTP sent on your phone</Text>
                 <View style={styles.inputContainer}>
-                    <FloatingTextInput1 
-                        label={'Username'} 
-                        value={username} 
-                        onChangeText={setUsername}  
-                    />
-                    <View style={styles.errorContainer}>
+                    <OTPTextInput
+                        length={4}
+                        value={otp}
+                        onChangeText={(text)=>_onChangeText(text)}
+                    />             
+                </View>
+                <View style={styles.errorContainer}>
                         <Text style={styles.errorText}>{1?'':'Please enter valid email ID'}</Text>
-                    </View>
                 </View>
                 
                  
-                <WideButton label={'Continue'} onPress={onContinue}/>    
+                <WideButton label={'Verify OTP'} onPress={onVerifyOTP}/>    
 
             </View>
         </>
@@ -72,4 +78,4 @@ const styles=StyleSheet.create({
         marginVertical:10
     }
 })
-export default ForgotPasswordScreen
+export default OTPScreen

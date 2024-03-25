@@ -4,6 +4,7 @@ import SigninScreen from "../Screens/Auth/SigninScreen";
 import SignupScreen from "../Screens/Auth/SignupScreen";
 import ForgotPasswordScreen from "../Screens/Auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "../Screens/Auth/ResetPasswordScreen";
+import OTPScreen from "../Screens/Auth/OTPScreen";
 
 const Stack = createNativeStackNavigator();
 const InitialScreens=()=>{
@@ -33,6 +34,11 @@ const InitialScreens=()=>{
           name="ResetPasswordScreen"
           options={{headerShown: false, tabBarVisible: false}}
           component={ResetPasswordScreen}
+        />
+        <Stack.Screen
+          name="OTPScreen"
+          options={{headerShown: false, tabBarVisible: false}}
+          component={OTPScreen}
         />
       </Stack.Navigator>
     )
