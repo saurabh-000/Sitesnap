@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/Home/HomeScreen';
-import ProfileScreen from '../Screens/Profile/ProfileScreen';
+import ProfileScreen from '../Screens/Account/AccountScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../Theme/Colors';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 const Tab = createBottomTabNavigator();
 
 function BottomNavigation() {
@@ -15,7 +15,7 @@ function BottomNavigation() {
         options={{
             tabBarShowLabel:false,
             tabBarIcon:({ focused, color, size })=>(
-                <View style={{flex: 1,justifyContent:'center',alignItems:'center'}}>
+                <View style={styles.container}>
                     <Icon
                         name="home"
                         size={22}
@@ -28,19 +28,19 @@ function BottomNavigation() {
         }} 
     />
       <Tab.Screen 
-        name="Profile" 
+        name="Account" 
         component={ProfileScreen}
         options={{
             tabBarShowLabel:false,
             tabBarIcon:({ focused, color, size })=>(
-                <View style={{flex: 1,justifyContent:'center',alignItems:'center'}}>
+                <View style={styles.container}>
                     <Icon
                         name="user"
                         size={22}
-                        style={{justifyContent: 'center'}}
+                        style={styles.iconStyle}
                         color={focused ? Colors.primary : "#B4B4B4"}
                     />
-                    <Text style={{fontSize:11,color:focused ? Colors.primary : "#B4B4B4"}}>Profile</Text>
+                    <Text style={[styles.labelStyle,{color:focused ? Colors.primary : "#B4B4B4"}]}>Account</Text>
             </View>
             )
         }} 
@@ -48,4 +48,13 @@ function BottomNavigation() {
     </Tab.Navigator>
   );
 }
+const styles=StyleSheet.create({
+    container:{
+        flex: 1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    iconStyle:{justifyContent: 'center'},
+    labelStyle:{fontSize:11}
+})
 export default BottomNavigation

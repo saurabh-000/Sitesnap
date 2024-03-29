@@ -6,8 +6,8 @@ import ForgotPasswordScreen from "../Screens/Auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "../Screens/Auth/ResetPasswordScreen";
 import OTPScreen from "../Screens/Auth/OTPScreen";
 import HomeScreen from "../Screens/Home/HomeScreen";
-import ProfileScreen from "../Screens/Profile/ProfileScreen";
 import BottomNavigation from "./BottomNavigation";
+import AccountScreen from "../Screens/Account/AccountScreen";
 
 const Stack = createNativeStackNavigator();
 const InitialScreens=()=>{
@@ -64,15 +64,15 @@ const Home=()=>{
   )
 }
 
-const Profile=()=>{
+const Account=()=>{
   return(
     <Stack.Navigator>
         <Stack.Screen
-          name="ProfileScreen"
+          name="AccountScreen"
           options={{headerShown: false, tabBarVisible: false}}
-          component={ProfileScreen}
+          component={AccountScreen}
         />
     </Stack.Navigator>
   )
 }
-export {InitialScreens, Home, Profile}
+export {InitialScreens, Home, Account}
