@@ -13,6 +13,7 @@ function BottomNavigation() {
         name="Home"
         component={HomeScreen}
         options={{
+            headerShown:false,
             tabBarShowLabel:false,
             tabBarIcon:({ focused, color, size })=>(
                 <View style={styles.container}>
@@ -28,9 +29,10 @@ function BottomNavigation() {
         }} 
     />
       <Tab.Screen 
-        name="Account" 
+        name="Account"         
         component={ProfileScreen}
         options={{
+            headerShown:false,
             tabBarShowLabel:false,
             tabBarIcon:({ focused, color, size })=>(
                 <View style={styles.container}>
@@ -54,7 +56,11 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
-    iconStyle:{justifyContent: 'center'},
-    labelStyle:{fontSize:11}
+    iconStyle:{
+        justifyContent: 'center'
+    },
+    labelStyle:{
+        fontSize:11
+    }
 })
 export default BottomNavigation
