@@ -39,7 +39,7 @@ const Header=(props)=>{
     )
 }
 const styles=StyleSheet.create({
-    container:{flexDirection:'row',justifyContent:'space-between',height:50,backgroundColor:Colors.white},
+    container:{flexDirection:'row',justifyContent:'space-between',height:50,backgroundColor:Colors.white,paddingHorizontal:10},
     parts:{alignItems:'center',paddingVertical:10,flexDirection:'row'},
     text:{marginHorizontal:10,fontFamily:Fonts.LatoBold,color:Colors.primary,fontSize:18},
     iconStyle:{justifyContent: 'center',marginHorizontal:10},
