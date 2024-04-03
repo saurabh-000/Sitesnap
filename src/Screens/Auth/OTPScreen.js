@@ -12,7 +12,7 @@ const OTPScreen=()=>{
     const navigation=useNavigation()
     const onVerifyOTP=()=>{
         console.log("verify otp",otp)
-        navigation.navigate("ResetPasswordScreen")
+        navigation.navigate("BottomNavigation")
     }
 
     const _onChangeText=(text)=>{

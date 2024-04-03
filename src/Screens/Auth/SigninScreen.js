@@ -7,20 +7,13 @@ import FloatingTextInput from "../../Components/TextInput/FloatingTextInput"
 import { useNavigation } from "@react-navigation/native"
 const SigninScreen=()=>{
     const navigation=useNavigation()
-    const [username,setUsername]=useState('')
-    const [password,setPassword]=useState('')
+    const [mobileNumber,setMobileNumber]=useState('')
+
     const onLogin=()=>{
         console.log("login function")
-        navigation.navigate("BottomNavigation")
-    }
-    const onClickSignup=()=>{
-        console.log("go to gc")
-        navigation.navigate("SignupScreen")
+        navigation.navigate("OTPScreen")
     }
 
-    const onClickForgotPassword=()=>{
-        navigation.navigate("ForgotPasswordScreen")
-    }
     return(
         <>
             <StatusBar
@@ -32,29 +25,16 @@ const SigninScreen=()=>{
                 <Text style={styles.heading}>Login to Sitesnap</Text>
                 <View style={styles.inputContainer}>
                     <FloatingTextInput 
-                        label={'Username'} 
-                        value={username} 
-                        onChangeText={setUsername}  
+                        label={'Mobile number'} 
+                        value={mobileNumber} 
+                        onChangeText={setMobileNumber}  
                     />
                     <View style={styles.errorContainer}>
                         <Text style={styles.errorText}>{1?'':'Please enter valid email ID'}</Text>
                     </View>
                 </View>
-                <View style={styles.inputContainer}>
-                    <FloatingTextInput 
-                        label={'Password'} 
-                        value={password} 
-                        onChangeText={setPassword}  
-                    />
-                    <TouchableOpacity onPress={onClickForgotPassword}>
-                        <Text  style={styles.forgotPasswordTextLink}>Forgot Password?</Text>
-                    </TouchableOpacity>
-                </View>
                  
                 <WideButton label={'Log in'} onPress={onLogin}/>    
-            
-                <Text style={styles.signupTextLinkOuter}>Don't have account? <Text style={styles.signupTextLinkInner} onPress ={onClickSignup}>Sign up</Text></Text>
-
             </View>
         </>
     )
@@ -89,19 +69,5 @@ const styles=StyleSheet.create({
         color:Colors.danger,
         fontFamily:Fonts.LatoRegular
     },
-    forgotPasswordTextLink:{
-        fontFamily:Fonts.LatoBold,
-        lineHeight:20,
-        marginVertical:10,
-        color:Colors.primary
-    },
-    signupTextLinkOuter:{
-        fontFamily:Fonts.LatoBold,
-        lineHeight:20,
-        marginVertical:10
-    },
-    signupTextLinkInner:{
-        color:Colors.primary
-    }
 })
 export default SigninScreen
