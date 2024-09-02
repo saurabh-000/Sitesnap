@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "210278871724",
+    "project_id": "sitesnap-72bae",
+    "storage_bucket": "sitesnap-72bae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210278871724:android:a1fbcfe764ce6c0a632509",
+        "android_client_info": {
+          "package_name": "com.sitesnap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210278871724-njb8lcb81vcp1rt54sfcijtgj1fkrgs5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sitesnap",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "210278871724-d93ng7mgm5k4oojqu66ij7n1bunlr6l3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0Yh3FvDDywbAyMfuuboGsNbmSBCPcpPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210278871724-d93ng7mgm5k4oojqu66ij7n1bunlr6l3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

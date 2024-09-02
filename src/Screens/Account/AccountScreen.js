@@ -5,19 +5,38 @@ import Header from "../../Components/Headers/Header"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
-import FloatingTextInput1 from "../../Components/TextInput/FloatingTextInput";
+import FloatingTextInput from "../../Components/Input/FloatingTextInput";
 import WideButton from "../../Components/Button/WideButton";
 import { Modalize } from "react-native-modalize";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView, State } from "react-native-gesture-handler";
 import Metrics from "../../Theme/Metrics";
 import ImageCropPicker from "react-native-image-crop-picker";
 import EditProfilePictureBottomSheet from "./Components/EditProfilePicBottomSheet";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUserData } from "../../Redux/UserSlice";
+import { useNavigation } from "@react-navigation/native";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 const AccountScreen=()=>{
     const editProfilePictureBottomSheetRef = useRef();
-    const [firstName,setFirstName]=useState('')
-    const [lastName,setLastName]=useState('')
-    const [mobileNumber,setMobileNumber]=useState('')
-    const [profilePic,setProfilePic]=useState(null)
+    const dispatch=useDispatch()
+    const navigation=useNavigation()
+    const userData=useSelector(state=>state.user.userData)
+    const isLoggedIn=useSelector(state=>state.user.isLoggedIn)
+    const [firstName,setFirstName]=useState(userData?.account?.first_name)
+    const [lastName,setLastName]=useState(userData?.account?.last_name)
+    const [mobileNumber,setMobilenNumber]=useState(userData?.account?.mobile_number)
+    const [email, setEmail] = useState(userData?.email)
+    const [profilePic,setProfilePic]=useState(userData?.account?.profile_pic)
+
+    const onLogoutAccount=()=>{
+        dispatch(clearUserData())
+        //navigation.navigate("Auth")
+        GoogleSignin.signOut()
+        navigation.popToTop()
+        navigation.replace('Auth')
+        console.log(userData,isLoggedIn)
+    }
+
     const onEditAccount=()=>{
         console.log('Edit account')
     }
@@ -131,21 +150,21 @@ const AccountScreen=()=>{
                 </View>
                 <View style={styles.userDetailContainer}>
                 <View style={[globalStyles.inputContainer,styles.textInputContainer]}>
-                    <FloatingTextInput1 
-                        label={'Mobile Number'} 
-                        value={mobileNumber} 
-                        onChangeText={setMobileNumber}  
+                    <FloatingTextInput
+                        label={'Email Address'} 
+                        value={email} 
+                        editable={false} 
                     />
                 </View>
                 <View style={[globalStyles.inputContainer,styles.textInputContainer]}>
-                    <FloatingTextInput1 
+                    <FloatingTextInput 
                         label={'First Name'} 
                         value={firstName} 
                         onChangeText={setFirstName}  
                     />
                 </View>
                 <View style={[globalStyles.inputContainer,styles.textInputContainer]}>
-                    <FloatingTextInput1 
+                    <FloatingTextInput 
                         label={'Last Name'} 
                         value={lastName} 
                         onChangeText={setLastName}  
@@ -154,6 +173,7 @@ const AccountScreen=()=>{
 
                 </View>
                 <WideButton label={'Save changes'} onPress={onEditAccount}/>
+                <WideButton label={'Log out'} onPress={onLogoutAccount} buttonColor={Colors.danger}/>
             </View>
             <EditProfilePictureBottomSheet editProfilePictureBottomSheetRef={editProfilePictureBottomSheetRef} onClose={onClose} onImportFromGallery={onImportFromGallery} onTakePhoto={onTakePhoto} />
             </GestureHandlerRootView>

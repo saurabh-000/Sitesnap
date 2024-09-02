@@ -1,49 +1,53 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../Screens/Home/HomeScreen';
 import ProfileScreen from '../Screens/Account/AccountScreen';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../Theme/Colors';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import AnimatedIcon from '../Components/AnimatedComponents/AnimatedIcon';
+import { Account, Home, Site } from './StackNavigation';
+import { useSelector } from 'react-redux';
 const Tab = createBottomTabNavigator();
 
 function BottomNavigation() {
+    const userData=useSelector(state=>state.user.userData)
   return (
-    <Tab.Navigator>
+    <Tab.Navigator 
+      screenOptions={{tabBarActiveBackgroundColor:Colors.backgroundSecondary}}
+    >
       <Tab.Screen 
         name="Home"
-        component={HomeScreen}
+        component={Home}
         options={{
             headerShown:false,
             tabBarShowLabel:false,
             tabBarIcon:({ focused, color, size })=>(
-                <View style={styles.container}>
-                    <Icon
-                        name="home"
-                        size={22}
-                        style={{justifyContent: 'center'}}
-                        color={focused ? Colors.primary : "#B4B4B4"}
-                    />
-                    <Text style={{fontSize:11,color:focused ? Colors.primary : "#B4B4B4"}}>Home</Text>
-            </View>
+                <AnimatedIcon name={"home"} focused={focused} />
             )
         }} 
     />
+    {
+        userData?.account?.role === 'site engineer' && (
+            <Tab.Screen 
+                name="Site"         
+                component={Site}
+                options={{
+                headerShown:false,
+                tabBarShowLabel:false,
+                tabBarIcon:({ focused, color, size })=>(
+                    <AnimatedIcon name={"plus"} focused={focused} />
+                    )
+                }} 
+            />
+        )
+    }
+    
       <Tab.Screen 
         name="Account"         
-        component={ProfileScreen}
+        component={Account}
         options={{
             headerShown:false,
             tabBarShowLabel:false,
             tabBarIcon:({ focused, color, size })=>(
-                <View style={styles.container}>
-                    <Icon
-                        name="user"
-                        size={22}
-                        style={styles.iconStyle}
-                        color={focused ? Colors.primary : "#B4B4B4"}
-                    />
-                    <Text style={[styles.labelStyle,{color:focused ? Colors.primary : "#B4B4B4"}]}>Account</Text>
-            </View>
+                <AnimatedIcon name={"user"} focused={focused} />
             )
         }} 
         />

@@ -3,12 +3,19 @@ import { Image, SafeAreaView, StatusBar, Text, View } from "react-native"
 import Colors from "../../Theme/Colors"
 import Fonts from "../../Theme/Fonts"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import { useSelector } from "react-redux"
 const SplashScreen=()=>{
     const navigation=useNavigation()
+    const userData=useSelector(state=>state.user.userdata)
+    const isLoggedIn=useSelector(state=>state.user.isLoggedIn)
+    console.log("islogged in",isLoggedIn,userData)
     useFocusEffect(
         React.useCallback(()=>{
             setTimeout(()=>{
-                navigation.navigate('SigninScreen')
+                if(isLoggedIn)
+                    navigation.navigate("BottomNavigation")
+                else
+                    navigation.navigate('Auth')
             },2000)
         },[])
     )

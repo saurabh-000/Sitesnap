@@ -9,10 +9,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { InitialScreens } from './src/Navigations/StackNavigation';
 import NativeDevSettings from 'react-native/Libraries/NativeModules/specs/NativeDevSettings';
+import { Provider } from 'react-redux'
+import { store,  persistor } from './src/Redux/Store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 function App() {
   const [isStarted,setIsStarted]=useState(false)
     useEffect(()=>{
-      console.log("hello")
       // if(!isStarted){
       //   connectToRemoteDebugger()
       //   setIsStarted(true)
@@ -22,9 +25,16 @@ function App() {
     NativeDevSettings.setIsDebuggingRemotely(true);
   };
   return (
-    <NavigationContainer>
-      <InitialScreens/>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <GestureHandlerRootView>
+            <InitialScreens/>
+          </GestureHandlerRootView>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
+    
   );
 }
 
