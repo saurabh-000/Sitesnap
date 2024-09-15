@@ -8,6 +8,7 @@ const ImageInput=({image,onChange,multiple=false})=>{
     const uploadImage=()=>{
         console.log("upload image")
         ImageCropPicker.openPicker({
+            mediaType:'photo',
             multiple:multiple,
             width: 300,
             height: 400,

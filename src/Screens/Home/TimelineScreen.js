@@ -94,7 +94,7 @@ const TimelineScreen=()=>{
                     <View style={{marginVertical:10}}>
                         {
                             item.activities.map((it,ind)=>(
-                                <TouchableOpacity onLongPress={()=>onEdit(it)} style={{marginVertical:10}}>
+                                <TouchableOpacity key={ind} onLongPress={()=>onEdit(it)} style={{marginVertical:10}}>
                                     <Text style={{fontFamily:Fonts.LatoBold,color:Colors.grayLight,textAlign:'center'}}>{moment(it.timestamp).format('hh:mm A')}</Text>
                                         {
                                             it.images.map((img,imgInd)=>(  

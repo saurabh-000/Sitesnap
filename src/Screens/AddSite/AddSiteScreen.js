@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import globalStyles from "../../Styles/GlobalStyles"
-import { StyleSheet, View } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
 import Header from "../../Components/Headers/Header"
 import FloatingTextInput from "../../Components/Input/FloatingTextInput"
 import WideButton from "../../Components/Button/WideButton"
@@ -70,6 +70,7 @@ const AddSiteScreen=()=>{
                 enableBackButton={false}
             />
             <View style={globalStyles.container}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={[styles.textInputContainer]}>
                     <FloatingTextInput
                         label={'Site Address'} 
@@ -100,7 +101,7 @@ const AddSiteScreen=()=>{
                 <View style={[styles.textInputContainer]}>
                     <ImageInput image={siteImage} onChange={onChangeImage} />
                 </View>
-                           
+                </ScrollView>           
                 <View style={{marginVertical:20}}>
                     <WideButton label={'Save changes'} onPress={onSubmit} disabled={validatePayload()} loading={loading}/>
                 </View>

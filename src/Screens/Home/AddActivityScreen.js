@@ -36,7 +36,9 @@ const AddActivityScreen=()=>{
         let payload = new FormData();
         payload.append("description", description);
         payload.append("site_id", site_id);
-        payload.append("payment[amount]", transactionAmount);
+        if(transactionAmount)
+            payload.append("payment[amount]", transactionAmount);
+        if(transactionId)
         payload.append("payment[transaction_id]", transactionId);
         if(images.length>0)
             images.map((item,index)=>{

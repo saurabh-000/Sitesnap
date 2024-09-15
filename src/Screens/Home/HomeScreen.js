@@ -60,7 +60,6 @@ const HomeScreen=()=>{
     }
 
     const getInfo=(data)=>{
-        console.log("data",data)
         if(userData?.account?.role!=='site engineer'){
             data=data?.created_by    
         }

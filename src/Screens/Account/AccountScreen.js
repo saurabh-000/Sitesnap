@@ -13,10 +13,17 @@ import Metrics from "../../Theme/Metrics";
 import ImageCropPicker from "react-native-image-crop-picker";
 import EditProfilePictureBottomSheet from "./Components/EditProfilePicBottomSheet";
 import { useDispatch, useSelector } from "react-redux";
-import { clearUserData } from "../../Redux/UserSlice";
-import { useNavigation } from "@react-navigation/native";
+import { clearUserData, setUserData } from "../../Redux/UserSlice";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { getFileName } from "../../Utils/CommonMethods";
+import { PUTAPI } from "../../API/APICalls";
+import { AppUrls } from "../../API/AppUrls";
+import { Toast } from "../../Utils/Toast";
+import { STRING_CONSTANTS } from "../../Utils/Constants";
+import FastImage from "react-native-fast-image";
 const AccountScreen=()=>{
+
     const editProfilePictureBottomSheetRef = useRef();
     const dispatch=useDispatch()
     const navigation=useNavigation()
@@ -27,6 +34,15 @@ const AccountScreen=()=>{
     const [mobileNumber,setMobilenNumber]=useState(userData?.account?.mobile_number)
     const [email, setEmail] = useState(userData?.email)
     const [profilePic,setProfilePic]=useState(userData?.account?.profile_pic)
+    const [loading,setLoading]=useState(false)
+
+    console.log("userData",userData)
+
+    useFocusEffect(
+        React.useCallback(()=>{            
+           console.log("profile",profilePic)
+        },[])
+    )
 
     const onLogoutAccount=()=>{
         dispatch(clearUserData())
@@ -38,7 +54,32 @@ const AccountScreen=()=>{
     }
 
     const onEditAccount=()=>{
+        setLoading(true)
         console.log('Edit account')
+        const formdata = new FormData();
+        formdata.append("first_name",firstName);
+        formdata.append("last_name", lastName);
+        if(profilePic?.path){
+            formdata.append("image", {
+                name:getFileName(profilePic?.path),
+                uri:profilePic?.path,
+                type:profilePic?.mime
+            });
+        }
+
+        PUTAPI(formdata,AppUrls.UPDATE_PROFILE,userData?.token,true).then(response=>{
+            console.log("response",response)
+            if(response?.success){
+                dispatch(setUserData({...userData,account:response?.data?.account}))
+                Toast(STRING_CONSTANTS.RECORD_UPDATE)
+                setProfilePic(response?.data?.account?.profile_pic)
+                setFirstName(response?.data?.account?.first_name)
+                setLastName(response?.data?.account?.last_name)
+            }else{
+                Toast(response?.error?.message)
+            }
+        }).catch((e)=>console.log(e))
+        .finally(()=>setLoading(false))
     }
 
     const onClose=()=>{
@@ -48,18 +89,14 @@ const AccountScreen=()=>{
     const onImportFromGallery=()=>{
         onClose()
         ImageCropPicker.openPicker({
+            mediaType:'photo',
             width: 300,
             height: 400,
             cropping: true,
-            cropperCircleOverlay: true,
-            cropperToolbarColor: Colors.primary,
-            cropperToolbarWidgetColor: Colors.white,
-            showCropFrame: false,
-            showCropGuidelines: false,
-            cropperStatusBarColor: Colors.primary,
+            cropperCircleOverlay:true,
           }).then(image => {
             console.log("image obj",image)
-            setProfilePic(image.path)
+            setProfilePic(image)
             onClose()
           });
       
@@ -70,6 +107,7 @@ const AccountScreen=()=>{
         hasAndroidPermission().then((permisson)=>{
             if(permisson){
                 ImageCropPicker.openCamera({
+                    mediaType:'photo',
                     compressImageQuality:0.8,
                     width: 100,
                     height: 100,
@@ -81,7 +119,8 @@ const AccountScreen=()=>{
                     showCropGuidelines: false,
                     cropperStatusBarColor: Colors.primary,
                   }).then(image => {
-                    setProfilePic(image.path)
+                    console.log("image",image)
+                    setProfilePic(image)
                     onClose()
                   }).catch(e=>console.log(e))
             }else{
@@ -123,12 +162,16 @@ const AccountScreen=()=>{
             <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={globalStyles.container}>
                 <View style={globalStyles.center}>
+                    {console.log("pro",profilePic)}
                     <View style={styles.profilePicContainer}>
                      {
                         profilePic 
                         ?
                         (
-                        <Image source={{uri:profilePic}} style={styles.profilePic}/>
+                            <FastImage
+                                style={styles.profilePic}
+                                source={{uri:profilePic?.path?profilePic?.path:profilePic,cache: FastImage.cacheControl.web}}
+                            />
                         )
                         :
                         (
@@ -172,7 +215,7 @@ const AccountScreen=()=>{
                 </View>
 
                 </View>
-                <WideButton label={'Save changes'} onPress={onEditAccount}/>
+                <WideButton label={'Save changes'} onPress={onEditAccount} loading={loading}/>
                 <WideButton label={'Log out'} onPress={onLogoutAccount} buttonColor={Colors.danger}/>
             </View>
             <EditProfilePictureBottomSheet editProfilePictureBottomSheetRef={editProfilePictureBottomSheetRef} onClose={onClose} onImportFromGallery={onImportFromGallery} onTakePhoto={onTakePhoto} />
