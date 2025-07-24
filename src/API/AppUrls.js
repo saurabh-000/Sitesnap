@@ -1,5 +1,5 @@
 //export const BASEURL="https://sitesnap-backend.onrender.com"
-export const BASEURL="http://192.168.1.7:3000"
+export const BASEURL="http://192.168.31.232:3000"
 export const AppUrls={
     LOGIN:BASEURL+"/auth/login/",
     GOOGLE_LOGIN:BASEURL+"/auth/google/",

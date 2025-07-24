@@ -14,6 +14,10 @@ import { Toast } from "../../Utils/Toast"
 import moment from "moment"
 import EditTimelineComponent from "./Componenet/EditTimelineComponenet"
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import FastImage from "react-native-fast-image"
+import { getCacheBustedUrl } from "../../Utils/CommonMethods"
+import { STRING_CONSTANTS } from "../../Utils/Constants"
+import EmptyListCompoenet from "../../Components/EmptyListComponent"
 const TimelineScreen=()=>{
     const route=useRoute()
     const navigation=useNavigation()
@@ -22,7 +26,8 @@ const TimelineScreen=()=>{
     const {site_id}=route?.params
     const [timeline,setTimeline]=useState([])
     const [selectedTimelineToEdit,setSelectedTimelineToEdit] = useState(null)
-
+    const [totalAmount,setTotalAmount]=useState(0)
+    const [loading,setLoading]=useState(false)
     useFocusEffect(
         React.useCallback(()=>{
             getTimeline()
@@ -30,14 +35,19 @@ const TimelineScreen=()=>{
     )
 
     const getTimeline=()=>{
+        setLoading(true)
         GETAPI(AppUrls.FETCH_TIMELINE.replace('<site_id>',site_id),userData?.token).then(response=>{
             if(response?.status){
-                console.log("response",response.data)
-                setTimeline(response?.data)
+                console.log("response",response?.data)
+                setTimeline(response?.data?.activity_list)
+                setTotalAmount(response?.data?.total_amount)
             }else{
                 Toast(response?.error?.message)
             }
-        })
+        }).catch((e)=>{
+            console.log("error",e)
+            Toast(STRING_CONSTANTS.SOMETHING_WENT_WRONG)
+        }).finally(()=>setLoading(false))
     }
 
     const onPressAddToTimeline=()=>{
@@ -73,9 +83,9 @@ const TimelineScreen=()=>{
                 enableBackButton={true}
             />
             <View style={globalStyles.container}>
-            <View style={{backgroundColor:Colors.dangerBackground,padding:10,marginVertical:10,flexDirection:'row',justifyContent:'space-between'}}>
-                <Text style={{fontSize:16,fontFamily:Fonts.LatoBold,color:Colors.primary,lineHeight:20}}>Total amount paid  200000</Text>
-                <TouchableOpacity onPress={()=>navigateToTransactionScreen()}>
+            <TouchableOpacity onPress={()=>navigateToTransactionScreen()} style={{backgroundColor:Colors.dangerBackground,padding:10,marginVertical:10,flexDirection:'row',justifyContent:'space-between'}}>
+                <Text style={{fontSize:16,fontFamily:Fonts.LatoBold,color:Colors.primary,lineHeight:20}}>Total amount : {totalAmount?totalAmount:0} <Text style={{fontSize:18}}>{'\u20B9'}</Text></Text>
+                <TouchableOpacity >
                         <Icon
                             name="chevron-right"
                             size={18}
@@ -83,29 +93,32 @@ const TimelineScreen=()=>{
                             color={Colors.primary}
                         />
                     </TouchableOpacity>
-            </View> 
-            <ScrollView  showsVerticalScrollIndicator={false}>
+            </TouchableOpacity> 
+            {console.log("timeline",timeline)}
+            {
+                (timeline.length==0 && !loading) && (
+                    <EmptyListCompoenet message={'No Activity Found'}/>
+                )
+            }
+            
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {
-                    timeline.map((item,index)=>(
+                    timeline?.map((item,index)=>(
                         <View key={index} style={{marginVertical:10}}>
-                    <View style={{backgroundColor:Colors.backgroundPrimary,padding:10,borderRadius:5}}>
+                    <View style={{backgroundColor:Colors.backgroundPrimary,padding:10,borderTopLeftRadius:5,borderTopRightRadius:5}}>
                         <Text style={{fontFamily:Fonts.LatoBlack,color:Colors.black,fontSize:18}}>{item?.date}</Text>
                     </View>
-                    <View style={{marginVertical:10}}>
+                    <View style={{marginVertical:0,backgroundColor:Colors.backgroundSecondary,borderBottomLeftRadius:5,borderBottomRightRadius:5,paddingHorizontal:5}}>
                         {
                             item.activities.map((it,ind)=>(
                                 <TouchableOpacity key={ind} onLongPress={()=>onEdit(it)} style={{marginVertical:10}}>
                                     <Text style={{fontFamily:Fonts.LatoBold,color:Colors.grayLight,textAlign:'center'}}>{moment(it.timestamp).format('hh:mm A')}</Text>
                                         {
-                                            it.images.map((img,imgInd)=>(  
-                                                <Image 
-                                                    source={{uri:img}}
-                                                    style={{height:150,marginVertical:10,borderRadius:5,backgroundColor:Colors.backgroundSecondary}}
-                                                    resizeMode='cover'
-                                                />
+                                            it.images.map((img,imgInd)=>(                                                  
+                                                <FastImage source={{uri:getCacheBustedUrl(img),cache: FastImage.cacheControl.web}} style={styles.timelineImage} resizeMode={FastImage.resizeMode.cover}/>
                                             ))
                                         }
-                            
+                                    
                                     <Text style={{color:Colors.black,fontSize:16,fontFamily:Fonts.LatoRegular}}>{it?.description}</Text>
                                 {
                                     it.payment && (
@@ -149,6 +162,12 @@ const styles=StyleSheet.create({
         color:Colors.white,
         fontFamily:Fonts.LatoBold,
         lineHeight:20
+    },
+    timelineImage:{
+        height:150,
+        marginVertical:10,
+        borderRadius:5,
+        backgroundColor:Colors.backgroundSecondary
     }
 })
 export default TimelineScreen

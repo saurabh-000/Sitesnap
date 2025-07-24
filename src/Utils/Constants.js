@@ -4,6 +4,7 @@ export const STRING_CONSTANTS = Object.freeze({
     RECORD_CREATE:"Record created successfully",
     RECORD_FETCHED:"Record fetched successfully",
     BAD_REQUEST:"Bad request, Please try with valid data",
-    RECORD_UPDATE:"Record updated successfully"
+    RECORD_UPDATE:"Record updated successfully",
+    SOMETHING_WENT_WRONG:"Something went wrong!"
 
 });

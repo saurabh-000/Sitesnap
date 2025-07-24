@@ -22,6 +22,7 @@ const AddSiteScreen=()=>{
     const [loading,setLoading]=useState(false)
 
     const onChangeImage=(image)=>{
+        console.log("compressedImage",image)
         setSiteImage(image)
     }
 

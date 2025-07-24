@@ -4,6 +4,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from "../../Theme/Colors";
 import Fonts from "../../Theme/Fonts";
 import ImageCropPicker from "react-native-image-crop-picker";
+import { CompressImage, getCacheBustedUrl } from "../../Utils/CommonMethods";
+import { STRING_CONSTANTS } from "../../Utils/Constants";
+import {Image as Compressor} from 'react-native-compressor'
+import FastImage from "react-native-fast-image";
 const ImageInput=({image,onChange,multiple=false})=>{
     const uploadImage=()=>{
         console.log("upload image")
@@ -19,8 +23,21 @@ const ImageInput=({image,onChange,multiple=false})=>{
             showCropFrame: false,
             showCropGuidelines: false,
             cropperStatusBarColor: Colors.primary,
-          }).then(image => {
-            console.log("image obj",image)
+          }).then(async image => {
+            console.log("image",image)
+            let compressedImage;
+            if(multiple){
+                image.forEach(async element => {
+                    element.path=await CompressImage(element?.path)
+                        
+                });
+            }else{
+                
+                compressedImage=await CompressImage(image?.path)
+                console.log(compressedImage)
+                image={...image,path:compressedImage}
+            }
+            
             onChange(image)
           });
     }
@@ -42,7 +59,11 @@ const ImageInput=({image,onChange,multiple=false})=>{
                 <TouchableOpacity onPress={()=>onRemove(item,index)} style={styles.removeIconButton}>
                     <Icon name='close-circle' size={24} color={Colors.danger}/>
                 </TouchableOpacity>
-                <Image source={{uri:item.path}} style={{height:100,width:100}} resizeMode="contain"/>
+                <FastImage
+                    style={styles.selectedImage}
+                    source={{uri:item?.path,cache: FastImage.cacheControl.web}}
+                    resizeMode={FastImage.resizeMode.center}
+                />
             </View>
         )
     }
@@ -72,7 +93,7 @@ const ImageInput=({image,onChange,multiple=false})=>{
                         <TouchableOpacity onPress={()=>onRemove()} style={styles.removeIconButton}>
                             <Icon name='close-circle' size={24} color={Colors.danger}/>
                         </TouchableOpacity>
-                        <Image source={{uri:image?.path?image.path:image}} style={{height:300,width:'auto'}} resizeMode="contain"/>
+                        <FastImage source={{uri:image?.path?getCacheBustedUrl(image.path):getCacheBustedUrl(image),cache:FastImage.cacheControl.web}} style={styles.image} resizeMode={FastImage.resizeMode.contain}/>
                     </View>     
                 )
                 
@@ -114,6 +135,14 @@ const styles=StyleSheet.create({
         right:5,
         top:5,
         zIndex:999
+    },
+    selectedImage:{
+        height:100,
+        width:100
+    },
+    image:{
+        height:300,
+        width:'auto'
     }
 })
 export default ImageInput

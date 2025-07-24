@@ -61,7 +61,7 @@ const EditSiteComponent=({reference,onRemove,site,onRefresh})=>{
         setSiteImage(image)
     }
     
-    const onSubmit=()=>{
+    const onSubmit=async()=>{
         setLoading(true)
         let payload = new FormData();
         payload.append("site_address", siteAddress);
@@ -90,9 +90,6 @@ const EditSiteComponent=({reference,onRemove,site,onRefresh})=>{
 
     }
 
-    {
-        console.log("pap",siteImage)
-    }
 
     return(
         

@@ -13,6 +13,10 @@ import { Loader } from "../../Utils/Loader";
 import { useSelector } from "react-redux";
 import EditSiteComponent from "./Componenet/EditSiteComponent";
 import ListItemSeparator from "../../Components/Dividers/ListItemSeparator";
+import FastImage from "react-native-fast-image";
+import { getCacheBustedUrl } from "../../Utils/CommonMethods";
+import Metrics from "../../Theme/Metrics";
+import EmptyListCompoenet from "../../Components/EmptyListComponent";
 const HomeScreen=()=>{
     const navigation=useNavigation()
     const userData=useSelector(state=>state.user.userData)
@@ -81,13 +85,15 @@ const HomeScreen=()=>{
 
     }
 
+    
+
     const renderSite=({item})=>{
         return(
                 <TouchableOpacity onLongPress={()=>onEdit(item)} onPress={()=>onPressSite(item)} style={globalStyles.box}>
                     {
                         item?.site_image
                         ?
-                            <Image source={item?.site_image?{uri:item?.site_image}:''} style={{height:150,width:'auto'}} resizeMode='cover'/>
+                            <FastImage source={item?.site_image?{uri:getCacheBustedUrl(item?.site_image),cache: FastImage.cacheControl.web}:''} style={{height:150,width:'auto'}} resizeMode='cover'/>
                         :
                             <View style={{height:150,width:'auto',backgroundColor:Colors.backgroundSecondary}}/>                    
                     }
@@ -101,9 +107,19 @@ const HomeScreen=()=>{
                             {
                                 userData?.account?.role==='site engineer'
                                 ?
-                                <Image source={{uri:item?.account?.profile_pic}} style={{width:40,height:40,borderRadius:200,backgroundColor:Colors.backgroundSecondary}} resizeMode="contain"/>
+                                <FastImage
+                                    style={styles.siteImage}
+                                    source={{uri:getCacheBustedUrl(item?.account?.profile_pic),cache: FastImage.cacheControl.web}}
+                                    resizeMode='contain'
+                                />
+                                
                                 :
-                                <Image source={{uri:item?.created_by?.account?.profile_pic}} style={{width:40,height:40,borderRadius:200,backgroundColor:Colors.backgroundSecondary}} resizeMode="contain"/>
+                                <FastImage
+                                    style={styles.siteImage}
+                                    source={{uri:getCacheBustedUrl(item?.created_by?.account?.profile_pic),cache: FastImage.cacheControl.web}}
+                                    resizeMode="contain"
+                                />
+                                
                             }
                             
                         </View>
@@ -132,6 +148,7 @@ const HomeScreen=()=>{
                     keyExtractor={(item,index)=>index}
                     ItemSeparatorComponent={ListItemSeparator}
                     showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={!loading && (<EmptyListCompoenet message={'No site found'}/>)}
                 />
                 
             </View>
@@ -144,6 +161,12 @@ const  styles=StyleSheet.create({
     text:{marginHorizontal:10,fontFamily:Fonts.LatoBold,color:Colors.primary,fontSize:18},
     textInputContainer:{
         marginVertical:10
+    },
+    siteImage:{
+        width:40,
+        height:40,
+        borderRadius:200,
+        backgroundColor:Colors.backgroundSecondary
     }
 })
 export default HomeScreen

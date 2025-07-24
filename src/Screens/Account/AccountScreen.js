@@ -14,9 +14,9 @@ import ImageCropPicker from "react-native-image-crop-picker";
 import EditProfilePictureBottomSheet from "./Components/EditProfilePicBottomSheet";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserData, setUserData } from "../../Redux/UserSlice";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { CommonActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { getFileName } from "../../Utils/CommonMethods";
+import { getCacheBustedUrl, getFileName } from "../../Utils/CommonMethods";
 import { PUTAPI } from "../../API/APICalls";
 import { AppUrls } from "../../API/AppUrls";
 import { Toast } from "../../Utils/Toast";
@@ -36,7 +36,6 @@ const AccountScreen=()=>{
     const [profilePic,setProfilePic]=useState(userData?.account?.profile_pic)
     const [loading,setLoading]=useState(false)
 
-    console.log("userData",userData)
 
     useFocusEffect(
         React.useCallback(()=>{            
@@ -48,8 +47,13 @@ const AccountScreen=()=>{
         dispatch(clearUserData())
         //navigation.navigate("Auth")
         GoogleSignin.signOut()
-        navigation.popToTop()
-        navigation.replace('Auth')
+        //navigation.popToTop()
+        navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'Auth' }], // Replace 'SignInScreen' with your actual sign-in screen name
+            })
+          );
         console.log(userData,isLoggedIn)
     }
 
@@ -162,16 +166,21 @@ const AccountScreen=()=>{
             <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={globalStyles.container}>
                 <View style={globalStyles.center}>
-                    {console.log("pro",profilePic)}
                     <View style={styles.profilePicContainer}>
                      {
                         profilePic 
                         ?
-                        (
-                            <FastImage
-                                style={styles.profilePic}
-                                source={{uri:profilePic?.path?profilePic?.path:profilePic,cache: FastImage.cacheControl.web}}
+                        (   <Image
+                            style={styles.profilePic}
+                            source={{uri:profilePic?.path?profilePic?.path:profilePic}}
                             />
+                            // (<FastImage 
+                            //     source={{uri:profilePic?.path?getCacheBustedUrl(profilePic?.path):getCacheBustedUrl(profilePic),cache:FastImage.cacheControl.web}} 
+                            //     style={styles.profilePic} resizeMode={FastImage.resizeMode.contain}
+                            // />
+                            // <FastImage
+                                
+                            // />
                         )
                         :
                         (
